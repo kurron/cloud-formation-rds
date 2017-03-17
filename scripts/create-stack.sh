@@ -4,11 +4,12 @@
 
 STACKNAME=${1:-Weapon-X-RDS}
 SUBNETS=${2:-subnet-014ffa48,subnet-47158620}
-PROJECTNAME=${3:-Weapon-X}
-ENVIRONMENT=${4:-development}
-CREATOR=${5:-CloudFormation}
-PURPOSE=${6:-Testing}
-TEMPLATELOCATION=${7:-file://$(pwd)/rds.yml}
+VPC=${3:-vpc-fadca69d}
+PROJECTNAME=${4:-Weapon-X}
+ENVIRONMENT=${5:-development}
+CREATOR=${6:-CloudFormation}
+PURPOSE=${7:-Testing}
+TEMPLATELOCATION=${8:-file://$(pwd)/rds.yml}
 
 VALIDATE="aws cloudformation validate-template --template-body $TEMPLATELOCATION"
 echo $VALIDATE
@@ -20,6 +21,7 @@ CREATE="aws cloudformation create-stack --stack-name $STACKNAME \
                                         --capabilities CAPABILITY_NAMED_IAM \
                                         --parameters ParameterKey=Project,ParameterValue=$PROJECTNAME \
                                                      ParameterKey=Environment,ParameterValue=$ENVIRONMENT \
+                                                     ParameterKey=VPC,ParameterValue=$VPC \
                                                      ParameterKey=Creator,ParameterValue=$CREATOR \
                                                      ParameterKey=Subnets,ParameterValue=\"$SUBNETS\" \
                                         --tags Key=Project,Value=$PROJECTNAME \

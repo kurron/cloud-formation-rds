@@ -2,7 +2,7 @@
 # Cannot get this to work for some reason
 #AWSTemplateFormatVersion: AWSTemplateFormatVersion: '2010-09-09'
 
-Description: This template places a new RDS cluster into a VPC.
+Description: This template places a new multi-zone RDS instance into a VPC.  Currently only supports MySQL.
 
 Metadata:
     Foo:
@@ -61,12 +61,57 @@ Parameters:
         Type: 'String'
         Default: '16'
 
+    StorageType:
+        Description: 'The storage type associated with this DB instance. standard | gp2 | io1'
+        Type: 'String'
+        Default: 'gp2'
+
     DBInstanceClass:
         Description: 'The name of the compute and memory capacity classes of the DB instance.'
         Type: 'String'
         Default: 'db.t2.small'
 
+    Port:
+        Description: 'The port for the instance.'
+        Type: 'String'
+        Default: '3306'
+
+    VPC:
+        Type: AWS::EC2::VPC::Id
+        Description: 'Which VPC the database should be deployed to.'
+
 Resources:
+    SecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: 'Database traffic from anywhere'
+            VpcId:
+                Ref: 'VPC'
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  FromPort:
+                      Ref: Port
+                  ToPort:
+                      Ref: Port
+                  CidrIp: 0.0.0.0/0
+            Tags:
+                - Key: 'Name'
+                  Value:
+                      'Fn::Join': [ ':', [ 'RDS', !Ref 'AWS::StackName' ] ]
+                - Key: 'Project'
+                  Value:
+                      Ref: 'Project'
+                - Key: 'Purpose'
+                  Value: 'Database access from any host'
+                - Key: 'Creator'
+                  Value:
+                      Ref: 'Creator'
+                - Key: 'Environment'
+                  Value:
+                      Ref: 'Environment'
+                - Key: 'Freetext'
+                  Value: 'No notes'
+
     InstanceParameterGroup:
         Type: AWS::RDS::DBParameterGroup
         Properties:
@@ -145,8 +190,11 @@ Resources:
                 Ref: MasterUserPassword
             MonitoringInterval: 0
             MultiAZ: true
+            Port:
+                Ref: Port
             PubliclyAccessible: true
-            StorageType: gp2
+            StorageType:
+                Ref: StorageType
             Tags:
                 - Key: 'Name'
                   Value:
@@ -165,8 +213,8 @@ Resources:
                 - Key: 'Freetext'
                   Value:
                       Ref: 'Notes'
-#            VPCSecurityGroups:
-#               - String
+            VPCSecurityGroups:
+               - !Ref SecurityGroup
 
 Outputs:
     Address:
