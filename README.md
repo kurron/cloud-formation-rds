@@ -1,6 +1,6 @@
 # Overview
 This project is a [CloudFormation](https://aws.amazon.com/cloudformation/) template
-that inserts a new [ElasticSearch](https://aws.amazon.com/elasticsearch-service/) cluster into a region.
+that inserts a new [Amazon Relational Database Service (RDS)](https://aws.amazon.com/rds/) cluster into a VPC.
 
 ## Assets Produced
 1. TODO
@@ -44,7 +44,7 @@ There is a convenience script for destroying clusters.  Run
 `scripts/destroy-stack.sh production-cluster` to destroy the cluster we created above.
 
 ## Creation Via The Console
-TODO: need to talk about getting the `elasticsearch.yml` file into S3 so that the console can see it
+TODO: need to talk about getting the `rds.yml` file into S3 so that the console can see it
 
 # Troubleshooting
 TODO
