@@ -42,6 +42,11 @@ Parameters:
         Type: 'String'
         Default: '5.7.16'
 
+    EngineOptionFamily:
+        Description: 'The version number of the database engine that you want to use.'
+        Type: 'String'
+        Default: 'MySQL5.7'
+
     MasterUsername:
         Description: 'The master user name for the DB instance.'
         Type: 'String'
@@ -116,12 +121,14 @@ Resources:
         Type: AWS::RDS::DBParameterGroup
         Properties:
             Description: 'MySQL configuration'
-            Family: 'MySQL5.7'
+            Family:
+                Ref: EngineOptionFamily
             Parameters:
-                max_allowed_packet: 67108864
-                lower_case_table_names: 1
                 character_set_server: utf8
                 collation_server: utf8_unicode_ci
+                lower_case_table_names: 1
+                max_allowed_packet: 67108864
+                time_zone: UTC
             Tags:
                 - Key: 'Name'
                   Value:

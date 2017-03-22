@@ -8,7 +8,7 @@ that inserts a new [Amazon Relational Database Service (RDS)](https://aws.amazon
 ## Tagging Strategy
 The following tags are applied to assets that allow tagging:
 * Project - useful for generating cost reports, defaults to `Weapon-X`
-* Purpose - what role the asset plays in the VPC, eg `ECS Agent`
+* Purpose - what role the asset plays in the VPC, eg `Relational database`
 * Creator - the entity creating the assets, defaults to `CloudFormation`
 * Environment - the context the assets are a part of, defaults to `development`
 * Freetext - place holder for asset-specific notes, meant to be adjusted in the console if needed
