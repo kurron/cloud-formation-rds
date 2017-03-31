@@ -33,7 +33,7 @@ Parameters:
         Default: 'No notes'
 
     Engine:
-        Description: 'The name of the database engine that you want to use for this DB cluster. '
+        Description: 'The name of the database engine that you want to use for this DB cluster.'
         Type: 'String'
         Default: 'mysql'
 
@@ -230,3 +230,11 @@ Outputs:
     Port:
         Description: 'The port number on which the database accepts connections.'
         Value: !GetAtt Database.Endpoint.Port
+    MasterUsername:
+        Description: 'The master user name for the DB instance.'
+        Value:
+          Ref: MasterUsername
+    MasterUserPassword:
+        Description: 'The password for the master database user.'
+        Value:
+          Ref: MasterUserPassword
